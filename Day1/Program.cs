@@ -19,7 +19,7 @@ namespace Day1_ReportRepair
             Console.WriteLine(test[0] + " * " + test[1] + " * " + test[2] + " = " + (test[0] * test[1] * test[2]));
 
             stopwatch.Stop();
-            Console.WriteLine(stopwatch.ElapsedMilliseconds);
+            Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
         }
     }
 }
