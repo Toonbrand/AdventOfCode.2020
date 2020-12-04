@@ -11,7 +11,7 @@ public class Day3 {
 	static List<String> field;
 	
 	public static void main(String[] args) throws IOException {
-		long startTime = System.nanoTime();
+		long startTime = System.currentTimeMillis();
 		
 		File file = new File("src/main/day3_input.txt");
 		field = Files.readAllLines(file.toPath(), Charset.defaultCharset());
@@ -25,8 +25,8 @@ public class Day3 {
 		int total = check1*check2*check3*check4*check5;
 		
 		System.out.println("Total multiplied: "+total);
-		long stopTime = System.nanoTime();
-		System.out.println("\nExecution time: "+(stopTime - startTime)+"ns");
+		long stopTime = System.currentTimeMillis();
+		System.out.println("\nExecution time: "+(stopTime - startTime)+"ms");
     }
 	
 	public static int countTrees(int stepX, int stepY) {
@@ -37,7 +37,7 @@ public class Day3 {
 			
 			if (row.charAt(xPos)=='#') trees++;
 			
-			xPos = (xPos+stepX)%(row.length());
+			xPos = (xPos+stepX)%row.length();
 		}
 		
 		System.out.println("Right "+stepX+", down "+stepY+" = " + trees + " trees.");
