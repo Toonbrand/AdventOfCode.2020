@@ -16,8 +16,9 @@ public class Day4 {
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
 		File file = new File("src/main/day4_input.txt");
-		List<String> lines = Files.readAllLines(file.toPath());
-		List<Map<String, String>> passMap = createPassMap(lines);
+		String linesStr = new String(Files.readAllBytes(file.toPath()))+"\n\r";
+		String[] linesArr = linesStr.replace("\n", " ").split(" ");
+		List<Map<String, String>> passMap = createPassMap(linesArr);
 		
 		int validPass = 0;
 		for (Map<String, String> map : passMap) {
@@ -25,7 +26,6 @@ public class Day4 {
 		}
 		
 		System.out.println("Out of " + passMap.size() + " passports, " + validPass + " were valid. ");
-		
 		long stopTime = System.currentTimeMillis();
 		System.out.println("\nExecution time: "+(stopTime - startTime)+"ms");
     }
@@ -54,7 +54,7 @@ public class Day4 {
 		if (!hcl.substring(0,1).equals("#") || !hcl.substring(1, hcl.length()).matches("[a-f0-9]*")) return false;
 		if (!eyeColors.contains(ecl)) return false;
 		if (pid.length() != 9) return false;
-		
+
 		if (hgt.contains("cm")) {
 			int hgtCm = Integer.parseInt(hgt.substring(0, hgt.indexOf("cm")));
 			if(hgtCm < 150 || hgtCm > 193) return false;
@@ -68,34 +68,18 @@ public class Day4 {
 		return true;
 	}
 	
-	public static List<Map<String, String>> createPassMap(List<String> lines){
-		List<String> passportList = new ArrayList<String>();
-		List<Map<String, String>> passportMap = new ArrayList<Map<String,String>>();
-		
-		int i = 0;
-		passportList.add("");
-		
-		for (String line : lines) {
-			if (line.isEmpty()) {
-				passportList.add("");
-				i++;
-				continue;
+	public static List<Map<String, String>> createPassMap(String[] lines){
+		List<Map<String,String>> passportMap = new ArrayList<Map<String,String>>();
+		Map<String,String> passMap = new HashMap<String, String>();
+		for (String pair: lines) {
+			if (!pair.equals("\r")) {
+				String[] keyValue = pair.split(":");
+				passMap.put(keyValue[0].replace("\r", ""), keyValue[1].replace("\r", ""));
+			}else {
+				passportMap.add(passMap);
+				passMap = new HashMap<String, String>();
 			}
-			passportList.set(i, passportList.get(i)+" "+line);	
 		}
-		
-		for (String passport: passportList) {
-			Map<String, String> passMap = new HashMap<String, String>();
-			String[] pairs = passport.split(" ");
-			for (String pair: pairs) {
-				if(!pair.isEmpty()) {
-					String[] keyValue = pair.split(":");
-					passMap.put(keyValue[0], keyValue[1]);
-				}
-			}
-			passportMap.add(passMap);
-		}
-		
 		return passportMap;
 	}
 }
