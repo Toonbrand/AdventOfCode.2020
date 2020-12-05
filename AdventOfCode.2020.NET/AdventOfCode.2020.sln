@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day1_ReportRepair", "Day1_ReportRepair\Day1_ReportRepair.csproj", "{8A2B84D2-0D8B-4DEC-98B2-F9D419AA1913}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day2_PasswordPhilosophy", "Day2_PasswordPhilosophy\Day2_PasswordPhilosophy.csproj", "{95FC4E9A-A7CF-41F1-9F15-1D4CB1B9D48F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day2_PasswordPhilosophy", "Day2_PasswordPhilosophy\Day2_PasswordPhilosophy.csproj", "{95FC4E9A-A7CF-41F1-9F15-1D4CB1B9D48F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day5_BinaryBoarding", "Day5_BinaryBoarding\Day5_BinaryBoarding.csproj", "{B1487044-AE86-4374-90CB-A4A25F1A9B4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{95FC4E9A-A7CF-41F1-9F15-1D4CB1B9D48F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95FC4E9A-A7CF-41F1-9F15-1D4CB1B9D48F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95FC4E9A-A7CF-41F1-9F15-1D4CB1B9D48F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1487044-AE86-4374-90CB-A4A25F1A9B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1487044-AE86-4374-90CB-A4A25F1A9B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1487044-AE86-4374-90CB-A4A25F1A9B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1487044-AE86-4374-90CB-A4A25F1A9B4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
