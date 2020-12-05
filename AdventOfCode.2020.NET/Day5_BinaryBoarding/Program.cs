@@ -20,7 +20,7 @@ namespace Day5_BinaryBoarding
             for (int i = 0; i < 8; i++) totalCols.Add(i);
 
             List<int> seatIds = new List<int>();
-            foreach (string line in lines) seatIds.Add(selectRow(line) * 8 + selectCol(line));
+            foreach (string line in lines) seatIds.Add(getSeatId(line));
             seatIds.Sort();
 
             int lastSeat = 0;
@@ -39,27 +39,30 @@ namespace Day5_BinaryBoarding
             Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
         }
 
-        static int selectRow(String input)
+        static int getSeatId(String input)
         {
             List<int> rows = new List<int>(totalRows);
-            foreach (char ch in input)
-            {
-                if (ch.Equals('F')) rows.RemoveRange(rows.Count / 2, rows.Count/2);
-                else if (ch.Equals('B')) rows.RemoveRange(0, rows.Count / 2);
-            }
-
-            return rows.FirstOrDefault();
-        }
-
-        static int selectCol(String input)
-        {
             List<int> cols = new List<int>(totalCols);
             foreach (char ch in input)
             {
-                if (ch.Equals('L')) cols.RemoveRange(cols.Count / 2, cols.Count / 2);
-                else if (ch.Equals('R')) cols.RemoveRange(0, cols.Count / 2);
+                switch (ch)
+                {
+                    case'F':
+                        rows.RemoveRange(rows.Count / 2, rows.Count / 2);
+                        break;
+                    case'B':
+                        rows.RemoveRange(0, rows.Count / 2);
+                        break;
+                    case 'L':
+                        cols.RemoveRange(cols.Count / 2, cols.Count / 2);
+                        break;
+                    case 'R':
+                        cols.RemoveRange(0, cols.Count / 2);
+                        break;
+                }
             }
-            return cols.FirstOrDefault();
+
+            return rows.FirstOrDefault()*8+cols.FirstOrDefault();
         }
     }
 }
