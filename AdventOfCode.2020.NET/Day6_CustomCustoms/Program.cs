@@ -13,23 +13,26 @@ namespace Day1_ReportRepair
             Stopwatch stopwatch = Stopwatch.StartNew();
             string[] lines = File.ReadAllLines(@"Input.txt");
 
-            string answers = "";
-            int answerCount =0;
-            foreach (string line in lines)
+            int ansCount1 = 0;
+            int ansCount2 = 0;
+
+            List<string> answers = new List<string>();
+            foreach (string  line in lines)
             {
                 if (line.Equals(""))
                 {
-                    answerCount += answers.Distinct().Count();
-                    answers = "";
+                    foreach (char ch in answers.First())
+                    {
+                        if (answers.All(a => a.Contains(ch))) ansCount2++;
+                    }
+                    ansCount1 += string.Join("", answers.ToArray()).Distinct().Count();
+                    answers = new List<string>();
                 }
-                else
-                {
-                    answers += line;
-                }
+                else answers.Add(line);
             }
 
-
-            Console.WriteLine("Answers: "+answerCount);
+            Console.WriteLine("Part one answers: "+ ansCount1);
+            Console.WriteLine("Part two answers: " + ansCount2);
             
             stopwatch.Stop();
             Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
