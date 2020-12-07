@@ -13,21 +13,37 @@ namespace Day1_ReportRepair
             Stopwatch stopwatch = Stopwatch.StartNew();
             string[] lines = File.ReadAllLines(@"Input.txt");
 
+            List<Bag> bags = createBagList(lines);
+
+            int part1Answ = 0;
+            foreach (Bag bag in bags) part1Answ += goldenBagCount(bag.bagChildren);
+
+            int part2Answ = totalBagCount(bags.Where(b => b.color == "shiny gold").FirstOrDefault().bagChildren);
+
+            Console.WriteLine("Part 1: " + part1Answ);
+            Console.WriteLine("Part 2: " + part2Answ);
+
+            stopwatch.Stop();
+            Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
+        }
+
+        public static List<Bag> createBagList(string[] lines)
+        {
             List<Bag> bags = new List<Bag>();
             foreach (string line in lines)
             {
                 string bagColor = line.Substring(0, line.IndexOf(" bag"));
-                List<string> rules = line[(line.IndexOf("contain ") + "contain ".Length)..].Split(", ").ToList();
 
                 Boolean newBag = false;
                 Bag bag = bags.Where(b => b.color == bagColor).FirstOrDefault();
 
                 if (bag == null)
                 {
-                    bag = new Bag{color = bagColor};
+                    bag = new Bag { color = bagColor };
                     newBag = true;
                 }
 
+                List<string> rules = line[(line.IndexOf("contain ") + "contain ".Length)..].Split(", ").ToList();
                 bag.bagChildren = new List<Bag>();
                 foreach (string rule in rules)
                 {
@@ -46,31 +62,19 @@ namespace Day1_ReportRepair
                         bag.bagChildren.Add(ruleBag);
                     }
                 }
-
                 if (newBag) bags.Add(bag);
             }
-
-            Bag mybag = bags.Where(b => b.color == "shiny gold").FirstOrDefault();
-            int part2Answ = totalBagCount(mybag.bagChildren);
-
-            int part1Answ = 0;
-            foreach (Bag bag in bags) part1Answ += goldenBagCount(bag.bagChildren);
-
-            Console.WriteLine("Part 1: " + part1Answ);
-            Console.WriteLine("Part 2: " + part2Answ);
-
-            stopwatch.Stop();
-            Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
+            return bags;
         }
 
         public static int totalBagCount(IEnumerable<Bag> bags)
         {
-            int ret = bags.Count();
+            int res = bags.Count();
             foreach (Bag bag in bags)
             {
-                ret += totalBagCount(bag.bagChildren);
+                res += totalBagCount(bag.bagChildren);
             }
-            return ret;
+            return res;
         }
 
         public static int goldenBagCount(IEnumerable<Bag> bags)
