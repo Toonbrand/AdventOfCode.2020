@@ -8,7 +8,7 @@ namespace Day1_ReportRepair
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             string[] lines = File.ReadAllLines(@"Input.txt");

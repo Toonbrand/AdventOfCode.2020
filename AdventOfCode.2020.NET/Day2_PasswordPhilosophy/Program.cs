@@ -7,7 +7,7 @@ namespace Day2_PasswordPhilosophy
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             string[] lines = File.ReadAllLines(@"Input.txt");

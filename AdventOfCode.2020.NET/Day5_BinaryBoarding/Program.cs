@@ -11,7 +11,7 @@ namespace Day5_BinaryBoarding
         static readonly List<int> totalRows = new List<int>();
         static readonly List<int> totalCols = new List<int>();
 
-        static void Main(string[] args)
+        static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             string[] lines = File.ReadAllLines(@"Input.txt");
