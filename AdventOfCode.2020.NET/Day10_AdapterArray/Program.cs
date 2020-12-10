@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,29 +12,32 @@ namespace Day10_AdapterArray
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             string[] lines = File.ReadAllLines(@"Input.txt");
-            int[] adapters = Array.ConvertAll(lines, l => int.Parse(l)).OrderBy(l=>l).ToArray();
+            int[] adapters = Array.ConvertAll(lines, l => int.Parse(l)).OrderBy(l => l).ToArray();
 
-            int jltDiff1 = 1, jltDiff2 = 0, jltDiff3 = 1;
-            for (int i = 0; i < adapters.Length-1; i++)
+            Dictionary<int, long> adaptBranches = new Dictionary<int, long> { { 0, 1 } };
+            int oneJolt = 0, threeJolt = 0;
+
+            for (int i = 0; i < adapters.Length; i++)
             {
-                int jmp = adapters[i + 1] - adapters[i];
-                switch (jmp)
+                int curr = adapters[i];
+                int jmp = curr-adaptBranches.ElementAt(i).Key;
+                if (jmp == 1) oneJolt++;
+                if (jmp == 3) threeJolt++;
+
+                long branches = 0;
+                foreach (KeyValuePair<int, long> comp in adaptBranches.Skip(count: -3))
                 {
-                    case 1:
-                        jltDiff1++;
-                        break;
-                    case 2:
-                        jltDiff2++;
-                        break;
-                    case 3:
-                        jltDiff3++;
-                        break;
+                    int diff = curr - comp.Key;
+                    if (Enumerable.Range(1, 3).Contains(diff))
+                    {
+                        branches += comp.Value;
+                    }
                 }
+                adaptBranches.Add(curr, branches);
             }
 
-            Console.WriteLine("Jolt difference 1: " + jltDiff1);
-            Console.WriteLine("Jolt difference 2: " + jltDiff2);
-            Console.WriteLine("Jolt difference 3: " + jltDiff3);
+            Console.WriteLine("[Part 1] "+oneJolt+"*"+threeJolt+" = " + oneJolt * threeJolt);
+            Console.WriteLine("[Part 2] Possible paths: " + adaptBranches.Last().Value);
 
             stopwatch.Stop();
             Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
