@@ -18,9 +18,10 @@ import javax.swing.SwingUtilities;
 public class Day11_visual {
 
 	static char[][] seatsGrid;
+	static char[][] drawGrid;
 	static int freeSeats;
 	static int occupiedSeats;
-	static int part =1;
+	static int part = 1;
 
 	public static void main(String[] args) throws Exception {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -46,9 +47,17 @@ public class Day11_visual {
 			}
 		}
 
+		drawGrid = seatsGrid;
 		char[][] freshSeats = Arrays.stream(seatsGrid).map(char[]::clone).toArray(char[][]::new);
 
-		while(true) {
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		while (true) {
 			part = 1;
 			seatsGrid = freshSeats;
 			System.out.println("[part 1] occupied seats: " + predictSeats(3, false));
@@ -69,7 +78,10 @@ public class Day11_visual {
 
 	static int predictSeats(int tolerance, Boolean vision) {
 		boolean loop = true;
+		boolean draw = true;
 
+		
+		
 		while (loop) {
 			char[][] newSeats = Arrays.stream(seatsGrid).map(char[]::clone).toArray(char[][]::new);
 			loop = false;
@@ -99,6 +111,10 @@ public class Day11_visual {
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			draw= !draw;
+			if(draw) {
+				drawGrid=newSeats;
 			}
 			seatsGrid = newSeats;
 			freeSeats = (int) Arrays.stream(seatsGrid).map(CharBuffer::wrap).flatMapToInt(CharBuffer::chars)
@@ -159,6 +175,10 @@ public class Day11_visual {
 @SuppressWarnings("serial")
 class MyPanel extends JPanel {
 
+	Color wallCol = new Color(43, 43, 43);
+	Color openCol = new Color(43, 140, 130);
+	Color occCol = new Color(216, 202, 4);
+	
 	public MyPanel() {
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		setBackground(Color.BLACK);
@@ -171,32 +191,32 @@ class MyPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		char[][] seatsGrid = Day11_visual.seatsGrid;
-		for (int y = 0; y < seatsGrid.length; y++) {
-			for (int x = 0; x < seatsGrid[y].length; x++) {
-				char c = seatsGrid[y][x];
-				if (c == '.' || c == 'X') {
-					g.setColor(Color.DARK_GRAY);
+			char[][] seatsGrid = Day11_visual.drawGrid;
+			for (int y = 0; y < seatsGrid.length; y++) {
+				for (int x = 0; x < seatsGrid[y].length; x++) {
+					char c = seatsGrid[y][x];
+					if (c == '.' || c == 'X') {
+						g.setColor(wallCol);
+					}
+					if (c == '#') {
+						g.setColor(openCol);
+					}
+					if (c == 'L') {
+						g.setColor(occCol);
+					}
+					g.fillRect(10 * x, 10 * y, 10, 10);
 				}
-				if (c == '#') {
-					g.setColor(Color.RED);
-				}
-				if (c == 'L') {
-					g.setColor(Color.GREEN);
-				}
-				g.fillRect(10 * x, 10 * y, 10, 10);
 			}
-		}
 
-		g.setFont(new Font("default", Font.BOLD, 16));
-		g.setColor(Color.WHITE);
-		g.drawString("Part "+Day11_visual.part, 10, (seatsGrid.length * 10) + 20);
-		g.setColor(Color.GREEN);
-		g.drawString("Free seats: " + Day11_visual.freeSeats, (Day11_visual.seatsGrid[0].length * 10 / 2) - 200,
-				(seatsGrid.length * 10) + 20);
-		g.setColor(Color.RED);
-		g.drawString("Occupied seats: " + Day11_visual.occupiedSeats, (Day11_visual.seatsGrid[0].length * 10 / 2) + 100,
-				(seatsGrid.length * 10) + 20);
+			g.setFont(new Font("default", Font.BOLD, 16));
+			g.setColor(Color.WHITE);
+			g.drawString("Part " + Day11_visual.part, 10, (seatsGrid.length * 10) + 20);
+			g.setColor(openCol);
+			g.drawString("Free seats: " + Day11_visual.freeSeats, (Day11_visual.seatsGrid[0].length * 10 / 2) - 200,
+					(seatsGrid.length * 10) + 20);
+			g.setColor(occCol);
+			g.drawString("Occupied seats: " + Day11_visual.occupiedSeats,
+					(Day11_visual.seatsGrid[0].length * 10 / 2) + 100, (seatsGrid.length * 10) + 20);
 
 		repaint();
 	}
