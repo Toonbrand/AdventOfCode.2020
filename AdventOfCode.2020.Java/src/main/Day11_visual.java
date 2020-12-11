@@ -107,7 +107,7 @@ public class Day11_visual {
 			}
 
 			try {
-				Thread.sleep(50);
+				Thread.sleep(25);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -176,8 +176,8 @@ public class Day11_visual {
 class MyPanel extends JPanel {
 
 	Color wallCol = new Color(43, 43, 43);
-	Color openCol = new Color(43, 140, 130);
-	Color occCol = new Color(216, 202, 4);
+	Color occCol= new Color(43, 140, 130);
+	Color openCol  = new Color(216, 202, 4);
 	
 	public MyPanel() {
 		setBorder(BorderFactory.createLineBorder(Color.black));
@@ -199,10 +199,10 @@ class MyPanel extends JPanel {
 						g.setColor(wallCol);
 					}
 					if (c == '#') {
-						g.setColor(openCol);
+						g.setColor(occCol);
 					}
 					if (c == 'L') {
-						g.setColor(occCol);
+						g.setColor(openCol);
 					}
 					g.fillRect(10 * x, 10 * y, 10, 10);
 				}
