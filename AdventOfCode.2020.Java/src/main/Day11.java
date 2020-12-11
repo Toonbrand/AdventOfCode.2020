@@ -1,14 +1,12 @@
 package main;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 
 public class Day11 {
-	static int acc;
 
 	public static void main(String[] args) throws Exception {
 		long startTime = System.currentTimeMillis();
