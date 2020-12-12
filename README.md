@@ -18,8 +18,8 @@ https://adventofcode.com/2020
 |  8   |   Done   |   Done   |   Java   |
 |  9   |   Done   |   Done   |   Java   |
 |  10  |   Done   |   Done   |   .NET   |
-|  11  |   DOne   |   Done   |   Java   |
-|  12  |          |          |          |
+|  11  |   Done   |   Done   |   Java   |
+|  12  |   Done   |   Done   |   .NET   |
 |  13  |          |          |          |
 |  14  |          |          |          |
 |  15  |          |          |          |

@@ -13,8 +13,10 @@ namespace Day11_RainRisk
             Stopwatch stopwatch = Stopwatch.StartNew();
             string[] lines = File.ReadAllLines(@"Input.txt");
 
-            int[] pos = new int[2] { 0, 0 };    //X, Y
-            int face = 2;  //E
+            int[] ship1Pos = new int[2] { 0, 0 };   //X, Y
+            int ship1Face = 2;                      //E
+            int[] ship2Pos = new int[2] { 0, 0 };   //X, Y
+            int[] wayPos = new int[2] { 10, -1 };   //X, Y
 
             Dictionary<int, int[]> faces = new Dictionary<int, int[]>()
             {
@@ -32,34 +34,51 @@ namespace Day11_RainRisk
                 switch (comm)
                 {
                     case 'N':
-                        pos[1] -= dist;
+                        wayPos[1] -= dist;
+                        ship1Pos[1] -= dist;
                         break;
                     case 'S':
-                        pos[1] += dist;
+                        wayPos[1] += dist;
+                        ship1Pos[1] += dist;
                         break;
                     case 'E':
-                        pos[0] += dist;
+                        wayPos[0] += dist;
+                        ship1Pos[0] += dist;
                         break;
                     case 'W':
-                        pos[0] -= dist;
+                        wayPos[0] -= dist;
+                        ship1Pos[0] -= dist;
                         break;
                     case 'L':
-                        face = MathMod(face - (dist / 90) - 1, 4) + 1;
+                        ship1Face = MathMod(ship1Face - (dist / 90) - 1, 4) + 1;
+                        for (int i = 0; i < dist / 90; i++)
+                        {
+                            wayPos = new int[2] { wayPos[1], wayPos[0] * -1 };
+                        }
                         break;
                     case 'R':
-                        face = MathMod((dist / 90) + face - 1, 4) + 1;
+                        ship1Face = MathMod((dist / 90) + ship1Face - 1, 4) + 1;
+                        for (int i = 0; i < dist / 90; i++)
+                        {
+                            wayPos = new int[2] { wayPos[1] * -1, wayPos[0] };
+                        }
                         break;
                     case 'F':
-                        pos[0] += faces[face][0] * dist;
-                        pos[1] += faces[face][1] * dist;
+                        ship1Pos[0] += faces[ship1Face][0] * dist;
+                        ship1Pos[1] += faces[ship1Face][1] * dist;
+                        for (int i = 0; i < dist; i++)
+                        {
+                            ship2Pos[0] += wayPos[0];
+                            ship2Pos[1] += wayPos[1];
+                        }
                         break;
                     default:
                         break;
                 }
             }
 
-
-            Console.WriteLine("Final position: " + (Math.Abs(pos[0]) + Math.Abs(pos[1])));
+            Console.WriteLine("Final position: " + (Math.Abs(ship1Pos[0]) + Math.Abs(ship1Pos[1])));
+            Console.WriteLine("Final position: " + (Math.Abs(ship2Pos[0]) + Math.Abs(ship2Pos[1])));
 
             stopwatch.Stop();
             Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
