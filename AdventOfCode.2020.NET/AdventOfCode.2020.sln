@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day7_HandyHaversacks", "Day
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day10_AdapterArray", "Day10_AdapterArray\Day10_AdapterArray.csproj", "{15ECC0EC-2A4D-422A-911A-91012575761C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day11_RainRisk", "Day11_RainRisk\Day11_RainRisk.csproj", "{2C928160-991F-47E5-B2F6-C968DFACFE03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day11_RainRisk", "Day11_RainRisk\Day11_RainRisk.csproj", "{2C928160-991F-47E5-B2F6-C968DFACFE03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day12_ShuttleSearch", "Day12_ShuttleSearch\Day12_ShuttleSearch.csproj", "{453A5B58-4483-4122-B803-6F3A5A391E17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{2C928160-991F-47E5-B2F6-C968DFACFE03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C928160-991F-47E5-B2F6-C968DFACFE03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C928160-991F-47E5-B2F6-C968DFACFE03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{453A5B58-4483-4122-B803-6F3A5A391E17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{453A5B58-4483-4122-B803-6F3A5A391E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{453A5B58-4483-4122-B803-6F3A5A391E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{453A5B58-4483-4122-B803-6F3A5A391E17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
