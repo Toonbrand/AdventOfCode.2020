@@ -19,37 +19,46 @@ namespace Day12_ShuttleSearch
             int[] allBusses = lines[1].Replace('x', '1').Split(',').ToList().ConvertAll(b => int.Parse(b)).ToArray();
 
             Boolean loop = true;
+            int highestBus = allBusses.Max();
+            int highestBusIndex = Array.IndexOf(allBusses, highestBus);
+
             for (int i = 1; loop; i++)
             {
-                long t = allBusses[0] * i;
-                long prev = t;
+                long t = highestBus * i;
                 Boolean success = true;
-                foreach (int bus in allBusses.Skip(1))
+
+                for (int j = 0; j < allBusses.Length; j++)
                 {
-                    if((prev - (prev % bus) + bus) == prev + 1)
+                    if(j == highestBusIndex)
                     {
-                        prev++;
+                        continue;
+                    }
+                    int bus = allBusses[j];
+
+                    long goal = t + (j - highestBusIndex);
+                    long over = (goal % bus);
+
+                    if (over == 0)
+                    {
                         continue;
                     }
                     else
                     {
                         success = false;
-                        prev++;
                         break;
                     }
+
                 }
+
                 if (success)
                 {
                     loop = false;
-                    Console.WriteLine(t);
+                    Console.WriteLine(t-highestBusIndex);
                 }
             }
 
             stopwatch.Stop();
             Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
-
-            Console.WriteLine("\npress any key to exit the process...");
-            Console.ReadKey();
         }
 
         static int part1(string[] busses, int earliestTime)
