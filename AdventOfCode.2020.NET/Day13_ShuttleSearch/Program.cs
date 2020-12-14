@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Day12_ShuttleSearch
 {
@@ -18,10 +22,10 @@ namespace Day12_ShuttleSearch
 
             int[] allBusses = lines[1].Replace('x', '1').Split(',').ToList().ConvertAll(b => int.Parse(b)).ToArray();
 
-            Boolean loop = true;
             int highestBus = allBusses.Max();
             int highestBusIndex = Array.IndexOf(allBusses, highestBus);
 
+            Boolean loop = true;
             for (int i = 1; loop; i++)
             {
                 long t = highestBus * i;
@@ -29,16 +33,13 @@ namespace Day12_ShuttleSearch
 
                 for (int j = 0; j < allBusses.Length; j++)
                 {
-                    if(j == highestBusIndex)
+                    int bus = allBusses[j];
+                    if (j == highestBusIndex || bus == 1)
                     {
                         continue;
                     }
-                    int bus = allBusses[j];
 
-                    long goal = t + (j - highestBusIndex);
-                    long over = (goal % bus);
-
-                    if (over == 0)
+                    if ((t + (j - highestBusIndex)) % bus == 0)
                     {
                         continue;
                     }
@@ -53,7 +54,7 @@ namespace Day12_ShuttleSearch
                 if (success)
                 {
                     loop = false;
-                    Console.WriteLine(t-highestBusIndex);
+                    Console.WriteLine(t - highestBusIndex);
                 }
             }
 
