@@ -13,58 +13,52 @@ namespace Day12_ShuttleSearch
     {
         static void Main(string[] args)
         {
-
             Stopwatch stopwatch = Stopwatch.StartNew();
             string[] lines = File.ReadAllLines(@"Input.txt");
 
-            //string[] idBusses = lines[1].Split(',').Where(s => s != "x").ToArray();
-            //Console.WriteLine("Part 1: " + part1(idBusses, Int32.Parse(lines[0])));
-
-            int[] allBusses = lines[1].Replace('x', '1').Split(',').ToList().ConvertAll(b => int.Parse(b)).ToArray();
-
-            int highestBus = allBusses.Max();
-            int highestBusIndex = Array.IndexOf(allBusses, highestBus);
-
-            Boolean loop = true;
-            for (int i = 1; loop; i++)
-            {
-                long t = highestBus * i;
-                Boolean success = true;
-
-                for (int j = 0; j < allBusses.Length; j++)
-                {
-                    int bus = allBusses[j];
-                    if (j == highestBusIndex || bus == 1)
-                    {
-                        continue;
-                    }
-
-                    if ((t + (j - highestBusIndex)) % bus == 0)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        success = false;
-                        break;
-                    }
-
-                }
-
-                if (success)
-                {
-                    loop = false;
-                    Console.WriteLine(t - highestBusIndex);
-                }
-            }
+            Console.WriteLine("Part 1: " + part1(lines));
+            Console.WriteLine("Part 2: " + part2(lines));
 
             stopwatch.Stop();
             Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
         }
 
-        static int part1(string[] busses, int earliestTime)
+        static long part2(string[] busses)
         {
-            int[] busIds = Array.ConvertAll(busses, s => int.Parse(s));
+            int[] allBusses = busses[1].Replace('x', '1').Split(',').ToList().ConvertAll(b => int.Parse(b)).ToArray();
+
+            long t = 0;
+            long inc = allBusses[0];    //Set increment to first bus
+
+            for (int i = 1; i < allBusses.Length; i++)
+            {
+                int nextBus = allBusses[i];
+
+                if (nextBus == 1)
+                {
+                    continue;
+                }
+
+                long t2 = nextBus;
+
+                while (true)
+                {
+                    t += inc;
+                    if ((t + i) % t2 == 0)
+                    {
+                        inc *= t2;
+                        break;
+                    }
+                }
+            }
+
+            return t;
+        }
+
+        static int part1(string[] lines)
+        {
+            int earliestTime = Int32.Parse(lines[0]);
+            int[] busIds = Array.ConvertAll(lines[1].Split(',').Where(s => s != "x").ToArray(), s => int.Parse(s));
 
             int idealId = int.MaxValue;
             int idealTime = int.MaxValue;
