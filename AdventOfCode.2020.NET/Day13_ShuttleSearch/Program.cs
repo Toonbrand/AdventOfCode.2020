@@ -28,19 +28,15 @@ namespace Day12_ShuttleSearch
             int[] allBusses = busses[1].Replace('x', '1').Split(',').ToList().ConvertAll(b => int.Parse(b)).ToArray();
 
             long t = 0;
-            long inc = allBusses[0];    //Set increment to first bus
+            long inc = allBusses[0];
 
             for (int i = 1; i < allBusses.Length; i++)
             {
                 int nextBus = allBusses[i];
-
                 if (nextBus == 1)
-                {
                     continue;
-                }
 
                 long t2 = nextBus;
-
                 while (true)
                 {
                     t += inc;

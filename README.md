@@ -20,7 +20,7 @@ https://adventofcode.com/2020
 |  10  |   Done   |   Done   |   .NET   |
 |  11  |   Done   |   Done   |   Java   |
 |  12  |   Done   |   Done   |   .NET   |
-|  13  |          |          |          |
+|  13  |   Done   |   Done   |   .NET   |
 |  14  |          |          |          |
 |  15  |          |          |          |
 |  16  |          |          |          |
