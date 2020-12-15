@@ -21,7 +21,7 @@ https://adventofcode.com/2020
 |  11  |   Done   |   Done   |   Java   |
 |  12  |   Done   |   Done   |   .NET   |
 |  13  |   Done   |   Done   |   .NET   |
-|  14  |          |          |          |
+|  14  |   Done   |   Done   |   Java   |
 |  15  |          |          |          |
 |  16  |          |          |          |
 |  17  |          |          |          |
