@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.HashMap;
 
-public class Day15 {
+public class Day15_RambunctiousRecitation {
 
 	static String[] nrsArr;
 

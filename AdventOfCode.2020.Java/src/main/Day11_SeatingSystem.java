@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 
-public class Day11 {
+public class Day11_SeatingSystem {
 
 	public static void main(String[] args) throws Exception {
 		long startTime = System.currentTimeMillis();

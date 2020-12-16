@@ -6,14 +6,14 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
 
-public class Day3 {
+public class Day03_TobogganTrajectory {
 
 	static List<String> field;
 
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
 
-		File file = new File("src/main/day3_input.txt");
+		File file = new File("src/main/day03_input.txt");
 		field = Files.readAllLines(file.toPath(), Charset.defaultCharset());
 
 		int check1 = countTrees(1, 1);

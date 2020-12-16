@@ -3,20 +3,19 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
 
 namespace Day16_TicketTranslation
 {
-    class Program
+    class Day16_TicketTranslation
     {
         static Rule[] rules;
         static int[] myTicket;
         static int[][] nearbyTickets;
 
-        static void Main(string[] args)
+        static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            string[] lines = File.ReadAllLines(@"Input.txt");
+            string[] lines = File.ReadAllLines(@"Day16_Input.txt");
             readInput(lines);
 
             //Fill list with valid tickets

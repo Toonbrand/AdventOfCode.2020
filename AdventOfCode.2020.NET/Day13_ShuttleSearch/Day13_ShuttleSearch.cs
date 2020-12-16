@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Day12_ShuttleSearch
 {
-    class Program
+    class Day13_ShuttleSearch
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            string[] lines = File.ReadAllLines(@"Input.txt");
+            string[] lines = File.ReadAllLines(@"Day13_Input.txt");
 
             Console.WriteLine("Part 1: " + part1(lines));
             Console.WriteLine("Part 2: " + part2(lines));

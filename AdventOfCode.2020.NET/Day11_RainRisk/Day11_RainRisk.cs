@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Day11_RainRisk
 {
-    class Program
+    class Day11_RainRisk
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            string[] lines = File.ReadAllLines(@"Input.txt");
+            string[] lines = File.ReadAllLines(@"Day11_Input.txt");
 
             int[] ship1Pos = new int[2] { 0, 0 };   //X, Y
             int ship1Face = 2;                      //E

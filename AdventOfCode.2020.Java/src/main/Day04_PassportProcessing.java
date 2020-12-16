@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Day4 {
+public class Day04_PassportProcessing {
 	static List<String> reqFields = Arrays.asList("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid");
 	static List<String> eyeColors = Arrays.asList("amb", "blu", "brn", "gry", "grn", "hzl", "oth");
 
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
-		File file = new File("src/main/day4_input.txt");
+		File file = new File("src/main/day04_input.txt");
 		String linesStr = new String(Files.readAllBytes(file.toPath())) + "\n\r";
 		String[] linesArr = linesStr.replace("\n", " ").split(" ");
 		List<Map<String, String>> passMap = createPassMap(linesArr);

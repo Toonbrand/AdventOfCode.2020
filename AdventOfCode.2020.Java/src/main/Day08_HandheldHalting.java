@@ -6,12 +6,12 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Day8 {
+public class Day08_HandheldHalting {
 	static int acc;
 
 	public static void main(String[] args) throws Exception {
 		long startTime = System.currentTimeMillis();
-		File file = new File("src/main/day8_input.txt");
+		File file = new File("src/main/day08_input.txt");
 		String[] linesArr = Files.readAllLines(file.toPath(), Charset.defaultCharset()).toArray(new String[0]);
 
 		tryRun(linesArr);

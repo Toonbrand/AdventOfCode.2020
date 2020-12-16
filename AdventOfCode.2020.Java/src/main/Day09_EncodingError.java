@@ -7,12 +7,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Day9 {
+public class Day09_EncodingError {
 	static int acc;
 
 	public static void main(String[] args) throws Exception {
 		long startTime = System.currentTimeMillis();
-		File file = new File("src/main/day9_input.txt");
+		File file = new File("src/main/day09_input.txt");
 		long[] nrs = Arrays.stream(new String(Files.readAllBytes(file.toPath())).split("\r\n"))
 				.mapToLong(Long::parseLong).toArray();
 

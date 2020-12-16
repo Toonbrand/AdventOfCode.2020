@@ -6,18 +6,18 @@ using System.Diagnostics;
 
 namespace Day1_ReportRepair
 {
-    class Program
+    class Day06_CustomCustoms
     {
         static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            string[] lines = File.ReadAllLines(@"Input.txt");
+            string[] lines = File.ReadAllLines(@"Day06_Input.txt");
 
             int ansCount1 = 0;
             int ansCount2 = 0;
 
             List<string> answers = new List<string>();
-            foreach (string  line in lines)
+            foreach (string line in lines)
             {
                 if (line.Equals(""))
                 {
@@ -31,9 +31,9 @@ namespace Day1_ReportRepair
                 else answers.Add(line);
             }
 
-            Console.WriteLine("Part one answers: "+ ansCount1);
+            Console.WriteLine("Part one answers: " + ansCount1);
             Console.WriteLine("Part two answers: " + ansCount2);
-            
+
             stopwatch.Stop();
             Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
         }

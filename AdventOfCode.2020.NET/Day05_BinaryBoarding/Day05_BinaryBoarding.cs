@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Day5_BinaryBoarding
 {
-    class Program
+    class Day05_BinaryBoarding
     {
         static readonly List<int> totalRows = new List<int>();
         static readonly List<int> totalCols = new List<int>();
@@ -14,7 +14,7 @@ namespace Day5_BinaryBoarding
         static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            string[] lines = File.ReadAllLines(@"Input.txt");
+            string[] lines = File.ReadAllLines(@"Day05_Input.txt");
 
             for (int i = 0; i < 128; i++) totalRows.Add(i);
             for (int i = 0; i < 8; i++) totalCols.Add(i);
@@ -26,9 +26,9 @@ namespace Day5_BinaryBoarding
             int lastSeat = 0;
             foreach (int seatId in seatIds)
             {
-                if (seatId-lastSeat==2)
+                if (seatId - lastSeat == 2)
                 {
-                    Console.WriteLine("Your seat ID: " + (seatId-1));
+                    Console.WriteLine("Your seat ID: " + (seatId - 1));
                     break;
                 }
                 lastSeat = seatId;
@@ -47,10 +47,10 @@ namespace Day5_BinaryBoarding
             {
                 switch (ch)
                 {
-                    case'F':
+                    case 'F':
                         rows.RemoveRange(rows.Count / 2, rows.Count / 2);
                         break;
-                    case'B':
+                    case 'B':
                         rows.RemoveRange(0, rows.Count / 2);
                         break;
                     case 'L':
@@ -62,7 +62,7 @@ namespace Day5_BinaryBoarding
                 }
             }
 
-            return rows.FirstOrDefault()*8+cols.FirstOrDefault();
+            return rows.FirstOrDefault() * 8 + cols.FirstOrDefault();
         }
     }
 }

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Day14 {
+public class Day14_DockingData {
 
 	static String emptyBin = "000000000000000000000000000000000000";
 

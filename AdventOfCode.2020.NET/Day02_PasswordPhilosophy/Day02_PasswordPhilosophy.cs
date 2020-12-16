@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace Day2_PasswordPhilosophy
 {
-    class Program
+    class Day02_PasswordPhilosophy
     {
         static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            string[] lines = File.ReadAllLines(@"Input.txt");
+            string[] lines = File.ReadAllLines(@"Day02_Input.txt");
             char[] delimiterChars = { ' ', '-', ':' };
-            int i=0;
+            int i = 0;
 
             foreach (string line in lines)
             {
@@ -21,8 +21,8 @@ namespace Day2_PasswordPhilosophy
                 int max = Int32.Parse(parts[1]);
                 char ch = Char.Parse(parts[2]);
                 string pass = parts[4];
-                
-                if (pass[min-1]==ch ^ pass[max-1]==ch)
+
+                if (pass[min - 1] == ch ^ pass[max - 1] == ch)
                 {
                     i++;
                 }

@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class Day11_visual {
+public class Day11_SeatingSystem_visual {
 
 	static char[][] seatsGrid;
 	static char[][] drawGrid;
@@ -51,7 +51,7 @@ public class Day11_visual {
 		char[][] freshSeats = Arrays.stream(seatsGrid).map(char[]::clone).toArray(char[][]::new);
 
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -185,13 +185,13 @@ class MyPanel extends JPanel {
 	}
 
 	public Dimension getPreferredSize() {
-		return new Dimension(Day11_visual.seatsGrid[0].length * 10, (Day11_visual.seatsGrid.length * 10) + 25);
+		return new Dimension(Day11_SeatingSystem_visual.seatsGrid[0].length * 10, (Day11_SeatingSystem_visual.seatsGrid.length * 10) + 25);
 	}
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-			char[][] seatsGrid = Day11_visual.drawGrid;
+			char[][] seatsGrid = Day11_SeatingSystem_visual.drawGrid;
 			for (int y = 0; y < seatsGrid.length; y++) {
 				for (int x = 0; x < seatsGrid[y].length; x++) {
 					char c = seatsGrid[y][x];
@@ -210,13 +210,13 @@ class MyPanel extends JPanel {
 
 			g.setFont(new Font("default", Font.BOLD, 16));
 			g.setColor(Color.WHITE);
-			g.drawString("Part " + Day11_visual.part, 10, (seatsGrid.length * 10) + 20);
+			g.drawString("Part " + Day11_SeatingSystem_visual.part, 10, (seatsGrid.length * 10) + 20);
 			g.setColor(openCol);
-			g.drawString("Free seats: " + Day11_visual.freeSeats, (Day11_visual.seatsGrid[0].length * 10 / 2) - 200,
+			g.drawString("Free seats: " + Day11_SeatingSystem_visual.freeSeats, (Day11_SeatingSystem_visual.seatsGrid[0].length * 10 / 2) - 200,
 					(seatsGrid.length * 10) + 20);
 			g.setColor(occCol);
-			g.drawString("Occupied seats: " + Day11_visual.occupiedSeats,
-					(Day11_visual.seatsGrid[0].length * 10 / 2) + 100, (seatsGrid.length * 10) + 20);
+			g.drawString("Occupied seats: " + Day11_SeatingSystem_visual.occupiedSeats,
+					(Day11_SeatingSystem_visual.seatsGrid[0].length * 10 / 2) + 100, (seatsGrid.length * 10) + 20);
 
 		repaint();
 	}
