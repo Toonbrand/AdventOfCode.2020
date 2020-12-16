@@ -19,11 +19,13 @@ namespace Day16_TicketTranslation
             string[] lines = File.ReadAllLines(@"Input.txt");
             readInput(lines);
 
-            foreach (int[] ticket in nearbyTickets)
+            int invalids = 0;
+            foreach (int[] tickets in nearbyTickets)
             {
-                //rules.Where(r => ticket.Any(t => r.range1.Contains(t) || r.range2.Contains(t)));
-                IEnumerable<int> test = ticket.Where(t => rules.Where(r => r.range1.Contains(t) || r.range2.Contains(t)).Any());
+                invalids += tickets.Where(t => !rules.Where(r => r.range1.Contains(t) || r.range2.Contains(t)).Any()).FirstOrDefault();
             }
+
+            Console.WriteLine(invalids);
 
             stopwatch.Stop();
             Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
@@ -41,9 +43,9 @@ namespace Day16_TicketTranslation
                 string range1 = line.Substring(line.IndexOf(": ") + 2, line.Length - (line.IndexOf(" or ") + 4));
                 string range2 = line.Substring(line.IndexOf(" or ") + 4, line.Length - (line.IndexOf(" or ") + 4));
                 int range1Min = int.Parse(range1.Split("-")[0]);
-                int range1Max = int.Parse(range1.Split("-")[1]);
+                int range1Max = int.Parse(range1.Split("-")[1])+1;
                 int range2Min = int.Parse(range2.Split("-")[0]);
-                int range2Max = int.Parse(range2.Split("-")[1]);
+                int range2Max = int.Parse(range2.Split("-")[1])+1;
 
                 rules[i] = new Rule
                 {
