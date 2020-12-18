@@ -7,7 +7,7 @@ import java.nio.file.Files;
 public class Day17_ConwayCubes {
 
 	static final int CYCLES = 6;
-	static int gridXLenght, gridYLenght, actCount;
+	static int gridXLenght, gridYLenght, pt1Count, pt2Count;
 	static String[] lines;
 
 	public static void main(String[] args) throws Exception {
@@ -17,25 +17,28 @@ public class Day17_ConwayCubes {
 		gridXLenght = lines[0].length();
 		gridYLenght = lines.length;
 
+		Boolean[][][] cube = createEmptyCube();
 		Boolean[][][][] hCube = createEmptyHCube();
+		cube = fillInitialCube(cube);
 		hCube = fillInitialHCube(hCube);
 
 		for (int i = 0; i < CYCLES; i++) {
+			cube = runCycle(cube);
 			hCube = runCycle(hCube);
 		}
 
-		System.out.println("[Part 1] Active cubes: " + actCount);
+		System.out.println("[Part 1] Active cubes: " + pt1Count);
+		System.out.println("[Part 2] Active cubes: " + pt2Count);
 
 		long stopTime = System.currentTimeMillis();
 		System.out.println("\nExecution time: " + (stopTime - startTime) + "ms");
 	}
 
-	// Run rules for every square and return a cube with the new states
-
+	// Run rules for every square and return a hypercube with the new states
 	public static Boolean[][][][] runCycle(Boolean[][][][] oldHCube) {
 		Boolean[][][][] newHCube = createEmptyHCube();
 
-		actCount = 0;
+		pt2Count = 0;
 		for (int w = 1; w < oldHCube.length - 1; w++) {
 			for (int z = 1; z < oldHCube[w].length - 1; z++) {
 				for (int y = 1; y < oldHCube[w][z].length - 1; y++) {
@@ -44,14 +47,14 @@ public class Day17_ConwayCubes {
 						if (oldHCube[w][z][y][x] == true) {
 							if (count == 2 || count == 3) {
 								newHCube[w][z][y][x] = true;
-								actCount++;
+								pt2Count++;
 							} else {
 								newHCube[w][z][y][x] = false;
 							}
 						} else {
 							if (count == 3) {
 								newHCube[w][z][y][x] = true;
-								actCount++;
+								pt2Count++;
 							} else {
 								newHCube[w][z][y][x] = false;
 							}
@@ -63,7 +66,7 @@ public class Day17_ConwayCubes {
 		return newHCube;
 	}
 
-	// Count the surrounding active squares for a position
+	// Count the surrounding active squares for a position in a hypercube
 	public static int countSurrSqrs(Boolean[][][][] cube, int w, int z, int y, int x) {
 		int act = 0;
 		for (int relW = -1; relW < 2; relW++) {
@@ -83,7 +86,7 @@ public class Day17_ConwayCubes {
 		return act;
 	}
 
-	// Fill the empty cube with the input
+	// Fill the empty hypercube with the input
 	public static Boolean[][][][] fillInitialHCube(Boolean[][][][] zArr) {
 		for (int i = 0; i < lines.length; i++) {
 			for (int j = 0; j < lines[i].length(); j++) {
@@ -95,8 +98,7 @@ public class Day17_ConwayCubes {
 		return zArr;
 	}
 
-	// Create empty cube
-
+	// Create empty hypercube
 	public static Boolean[][][][] createEmptyHCube() {
 		Boolean[][][][] hyperCube = new Boolean[3 + (CYCLES * 2)][][][];
 		for (int w = 0; w < hyperCube.length; w++) {
@@ -115,6 +117,84 @@ public class Day17_ConwayCubes {
 			hyperCube[w] = cube;
 		}
 		return hyperCube;
+	}
+
+	// Run rules for every square and return a cube with the new states
+	public static Boolean[][][] runCycle(Boolean[][][] oldCube) {
+		Boolean[][][] newCube = createEmptyCube();
+
+		pt1Count = 0;
+		for (int z = 1; z < oldCube.length - 1; z++) {
+			for (int y = 1; y < oldCube[z].length - 1; y++) {
+				for (int x = 1; x < oldCube[z][y].length - 1; x++) {
+					int count = countSurrSqrs(oldCube, x, y, z);
+					if (oldCube[z][y][x] == true) {
+						if (count == 2 || count == 3) {
+							newCube[z][y][x] = true;
+							pt1Count++;
+						} else {
+							newCube[z][y][x] = false;
+						}
+					} else {
+						if (count == 3) {
+							newCube[z][y][x] = true;
+							pt1Count++;
+						} else {
+							newCube[z][y][x] = false;
+						}
+					}
+				}
+			}
+		}
+
+		return newCube;
+	}
+
+	// Count the surrounding active squares for a position
+	public static int countSurrSqrs(Boolean[][][] cube, int x, int y, int z) {
+		int act = 0;
+		for (int relZ = -1; relZ < 2; relZ++) {
+			for (int relY = -1; relY < 2; relY++) {
+				for (int relX = -1; relX < 2; relX++) {
+					if (relX == 0 && relY == 0 && relZ == 0) {
+						continue;
+					}
+					if (cube[z - relZ][y - relY][x - relX] == true) {
+						act++;
+					}
+				}
+			}
+		}
+		return act;
+	}
+
+	// Fill the empty cube with the input
+	public static Boolean[][][] fillInitialCube(Boolean[][][] zArr) {
+		for (int i = 0; i < lines.length; i++) {
+			for (int j = 0; j < lines[i].length(); j++) {
+				if (lines[i].charAt(j) == '#') {
+					zArr[CYCLES][i + CYCLES][j + CYCLES] = true;
+				}
+			}
+		}
+		return zArr;
+	}
+
+	// Create empty cube
+	public static Boolean[][][] createEmptyCube() {
+		Boolean[][][] cube = new Boolean[1 + (CYCLES * 2)][][];
+		for (int z = 0; z < cube.length; z++) {
+			Boolean[][] yArr = new Boolean[gridYLenght + ((1 + CYCLES) * 2)][];
+			for (int y = 0; y < yArr.length; y++) {
+				Boolean[] xArr = new Boolean[gridXLenght + ((1 + CYCLES) * 2)];
+				for (int x = 0; x < xArr.length; x++) {
+					xArr[x] = false;
+				}
+				yArr[y] = xArr;
+			}
+			cube[z] = yArr;
+		}
+		return cube;
 	}
 
 	// Just for debugging
