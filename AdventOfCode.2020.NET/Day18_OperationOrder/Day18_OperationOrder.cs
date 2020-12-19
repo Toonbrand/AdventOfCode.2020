@@ -14,11 +14,19 @@ namespace Day18_OperationOrder
             Stopwatch stopwatch = Stopwatch.StartNew();
             string[] lines = File.ReadAllLines(@"Day18_Input.txt");
 
+            Console.WriteLine("[Part 1] sum: " + calcTotal(lines, true));
+            Console.WriteLine("[Part 2] sum: " + calcTotal(lines, false));
+
+            stopwatch.Stop();
+            Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
+        }
+
+        public static long calcTotal(string[] lines, bool part1)
+        {
             long tot = 0;
             foreach (string line in lines)
             {
                 List<char> exp = line.ToCharArray().ToList();
-
                 while (exp.Any(e => e == '('))
                 {
                     int openPar = -1;
@@ -36,41 +44,57 @@ namespace Day18_OperationOrder
                     }
 
                     string calc = new string(exp.GetRange(openPar + 1, closePar - 1 - openPar).ToArray());
-                    long res = calcLeftRight(calc);
+
+                    long res = part1 ? calcLeftRight(calc) : calcByPrecedence(calc);
 
                     exp.RemoveRange(openPar, calc.Length + 2);
                     exp.InsertRange(openPar, res.ToString().ToList());
                 }
 
-                tot += calcLeftRight(new string(exp.ToArray()));
+                string input = new string(exp.ToArray());
+                tot += part1 ? calcLeftRight(input) : calcByPrecedence(input);
+            }
+            return tot;
+        }
+
+        public static long calcByPrecedence(string input)
+        {
+            List<string> inputArr = input.Split(" ").ToList();
+
+            while (inputArr.Contains("+"))
+            {
+                int i = inputArr.IndexOf("+");
+                long sum = long.Parse(inputArr[i - 1]) + long.Parse(inputArr[i + 1]);
+                inputArr.RemoveRange(i - 1, 3);
+                inputArr.Insert(i - 1, sum.ToString());
             }
 
-            Console.WriteLine(tot);
-            stopwatch.Stop();
-            Console.WriteLine("Executed in: " + stopwatch.ElapsedMilliseconds + "ms");
+            while (inputArr.Contains("*"))
+            {
+                int i = inputArr.IndexOf("*");
+                long sum = long.Parse(inputArr[i - 1]) * long.Parse(inputArr[i + 1]);
+                inputArr.RemoveRange(i - 1, 3);
+                inputArr.Insert(i - 1, sum.ToString());
+            }
+
+            return long.Parse(inputArr.First());
         }
 
         public static long calcLeftRight(string input)
         {
-            DataTable dt = new DataTable();
-            long tot = Int32.Parse(input.Substring(0, input.IndexOf(' ')));
-            for (int i = 0; i < input.Length; i++)
+            List<string> inputArr = input.Split(" ").ToList();
+
+            while (inputArr.Contains("+") || inputArr.Contains("*"))
             {
-                if (input[i] == '+' || input[i] == '*')
-                {
-                    int next = input.IndexOf(' ', i + 2);
-                    if (next > 0)
-                    {
-                        tot = (long)Convert.ToDouble((dt.Compute(tot + (input[i..next]+".0"), " ").ToString()));
-                    }
-                    else
-                    {
-                        tot = (long)Convert.ToDouble((dt.Compute(tot + input[i..] + ".0", " ")).ToString());
-                    }
-                }
+                int i = Array.FindIndex(inputArr.ToArray(), i => i == "+" || i == "*");
+                long sum = inputArr[i] == "+" ?
+                    long.Parse(inputArr[i - 1]) + long.Parse(inputArr[i + 1]) :
+                    long.Parse(inputArr[i - 1]) * long.Parse(inputArr[i + 1]);
+                inputArr.RemoveRange(i - 1, 3);
+                inputArr.Insert(i - 1, sum.ToString());
             }
 
-            return tot;
+            return long.Parse(inputArr.First());
         }
     }
 }
