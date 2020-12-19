@@ -24,7 +24,7 @@ https://adventofcode.com/2020
 |  14  |   Done   |   Done   |   Java   |
 |  15  |   Done   |   Done   |   Java   |
 |  16  |   Done   |   Done   |   .NET   |
-|  17  |          |          |          |
+|  17  |   Done   |   Done   |   Java   |
 |  18  |          |          |          |
 |  19  |          |          |          |
 |  20  |          |          |          |
