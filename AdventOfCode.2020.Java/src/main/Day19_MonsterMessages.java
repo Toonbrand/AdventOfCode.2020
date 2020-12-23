@@ -11,6 +11,8 @@ import java.util.Map;
 public class Day19_MonsterMessages {
 
 	static Map<Integer, String> rules;
+	static int longestMessage = 0;
+	static List<String> recMessages;
 
 	public static void main(String[] args) throws Exception {
 		long startTime = System.currentTimeMillis();
@@ -27,17 +29,19 @@ public class Day19_MonsterMessages {
 			String rule = line.substring(line.indexOf(":") + 2, line.length());
 			rules.put(ruleNr, rule);
 		}
-				
-		List<String> recMessages = new ArrayList<String>();
+		
+		recMessages = new ArrayList<String>();
 		for (i++; i < lines.length; i++) {
 			recMessages.add(lines[i]);
+			if(lines[i].length() > longestMessage){
+				longestMessage = lines[i].length();
+			}
 		}
-		
 		
 		List<String> in = new ArrayList<String>();
 		in.add("");
 		List<String> messages = getMessages(rules.get(0).split(" "), in);
-
+		
 		int res = 0;
 		for (String message : messages) {
 			if(recMessages.contains(message)){
@@ -53,8 +57,9 @@ public class Day19_MonsterMessages {
 	}
 
 	public static List<String> getMessages(String[] numbers, List<String> res) {
-		
 		for (String s : numbers) {
+			res = removeInvalids(res);
+			
 			int i = Integer.parseInt(s);
 			String rule = rules.get(i);
 			if (rule.contains("a")) {
@@ -79,6 +84,17 @@ public class Day19_MonsterMessages {
 			}
 		}
 
+		return res;
+	}
+	
+	public static List<String> removeInvalids(List<String> res){
+		for (int k = 0; k < res.size(); k++) {
+			String test = res.get(k);
+			if(!recMessages.stream().anyMatch((a) -> a.startsWith(test))){
+				res.remove(k);
+				k--;
+			}
+		}
 		return res;
 	}
 }
