@@ -26,10 +26,13 @@ https://adventofcode.com/2020
 |  16  |   Done   |   Done   |   .NET   |
 |  17  |   Done   |   Done   |   Java   |
 |  18  |   Done   |   Done   |   .NET   |
-|  19  |          |          |          |
+|  19  |   Done   |   Done   |   Java   |
 |  20  |          |          |          |
 |  21  |          |          |          |
 |  22  |          |          |          |
 |  23  |          |          |          |
 |  24  |          |          |          |
 |  25  |          |          |          |
+
+.NET: 10
+Java: 9
