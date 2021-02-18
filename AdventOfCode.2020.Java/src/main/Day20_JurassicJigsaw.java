@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Day20_JurassicJigsaw {
@@ -17,48 +18,128 @@ public class Day20_JurassicJigsaw {
 		File file = new File("src/main/day20_input.txt");
 		String[] lines = Files.readAllLines(file.toPath(), Charset.defaultCharset()).toArray(new String[0]);
 		List<Tile> tiles = getTilesList(lines);
-		tiles = calcEdges(tiles);
 
+		// Calculate edges
+		tiles = calcEdges(tiles);
 		long cornersMult = 1;
 		for (Tile tile : cornerTiles)
 			cornersMult *= tile.id;
-		System.out.println("[Part 1] Multiplication of all corners: " + cornersMult);
 
+		// Solve puzzle
 		Tile[][] solvedPuzzle = solvePuzzle(tiles.size());
-		
+
+		// Print out solved id's
 		System.out.println("\n\nSolved puzzle by id:");
-		
 		for (Tile[] solvedTiles : solvedPuzzle) {
 			for (Tile tile : solvedTiles) {
 				System.out.print(tile.id + " ");
 			}
 			System.out.println();
 		}
-		
+
+		// Convert solved puzzle to String array
 		int gridSize = tiles.get(0).grid.length;
-		int a = tiles.size();
-		int b = gridSize;
-		String[] solvedPuzzleArr = new String[(tiles.size()/3)*(gridSize-2)];
-		
+		String[] solvedPuzzleArr = new String[(int) ((Math.sqrt(tiles.size())) * (gridSize - 2))];
 		int pIndex = 0;
 		for (Tile[] row : solvedPuzzle) {
-			for(int i = gridSize-2; i >= 1; i--, pIndex++) {
+			for (int i = gridSize - 2; i >= 1; i--, pIndex++) {
 				solvedPuzzleArr[pIndex] = "";
 				for (Tile tile : row) {
-					solvedPuzzleArr[pIndex] += new String(tile.grid[i]).substring(1, gridSize-1);
+					solvedPuzzleArr[pIndex] += new String(tile.grid[i]).substring(1, gridSize - 1);
 				}
 			}
 		}
-		
+
+		// Rotate and flip until we find monsters
+		int monsters = 0;
+		int i = 0;
+		while (monsters == 0) {
+			if (i == 4) {
+				solvedPuzzleArr = flipPuzzleHor(solvedPuzzleArr);
+				i = 0;
+			} else {
+				solvedPuzzleArr = rotatePuzzleClockwise(solvedPuzzleArr);
+				i++;
+			}
+			monsters = findSeaMonsters(solvedPuzzleArr);
+		}
+
+		// Print out puzzle
 		System.out.println("\nSolved puzzle image:");
 		for (String string : solvedPuzzleArr) {
 			System.out.println(string);
 		}
-		
+
+		// Count remaining hashtags
+		int hashtagCount = 0;
+		for (String string : solvedPuzzleArr) {
+			hashtagCount += string.length() - string.replace("#", "").length();
+		}
+
+		System.out.println("\n[Part 1] Multiplication of all corners: " + cornersMult);
+		System.out.println("[Part 2] Monsters found: " + monsters + " | Hashtags remaining: " + hashtagCount);
+
 		long stopTime = System.currentTimeMillis();
 		System.out.println("\nExecution time: " + (stopTime - startTime) + "ms");
 	}
-	
+
+	public static String[] flipPuzzleHor(String[] puzzle) {
+		for (int i = 0; i < puzzle.length; i++) {
+			puzzle[i] = new StringBuilder(puzzle[i]).reverse().toString();
+		}
+		return puzzle;
+	}
+
+	public static String[] rotatePuzzleClockwise(String[] puzzle) {
+		int size = puzzle.length;
+		String[] rotPuzzle = Arrays.copyOf(puzzle, puzzle.length);
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				StringBuilder line = new StringBuilder(rotPuzzle[i]);
+				line.setCharAt(j, puzzle[size - j - 1].charAt(i));
+				rotPuzzle[i] = line.toString();
+			}
+		}
+		return rotPuzzle;
+	}
+
+	public static int findSeaMonsters(String[] puzzle) {
+		char[] mon1 = "                  # ".toCharArray();
+		char[] mon2 = "#    ##    ##    ###".toCharArray();
+		char[] mon3 = " #  #  #  #  #  #   ".toCharArray();
+		int monCount = 0;
+
+		for (int i = 0; i < puzzle.length - 2; i++) {
+			for (int j = 0; j < puzzle[i].length() - mon1.length; j++) {
+				boolean found = true;
+				for (int k = 0; k < mon1.length; k++) {
+					if ((mon1[k] != '#' || puzzle[i + 0].charAt(k + j) == '#')
+							&& (mon2[k] != '#' || puzzle[i + 1].charAt(k + j) == '#')
+							&& (mon3[k] != '#' || puzzle[i + 2].charAt(k + j) == '#')) {
+					} else {
+						found = false;
+						break;
+					}
+				}
+				if (found) {
+					monCount++;
+					char[] line1 = puzzle[i + 0].toCharArray();
+					char[] line2 = puzzle[i + 1].toCharArray();
+					char[] line3 = puzzle[i + 2].toCharArray();
+					for (int k = 0; k < mon1.length; k++) {
+						line1[k + j] = mon1[k] == '#' ? 'O' : line1[k + j];
+						line2[k + j] = mon2[k] == '#' ? 'O' : line2[k + j];
+						line3[k + j] = mon3[k] == '#' ? 'O' : line3[k + j];
+					}
+					puzzle[i + 0] = new String(line1);
+					puzzle[i + 1] = new String(line2);
+					puzzle[i + 2] = new String(line3);
+				}
+			}
+		}
+		return monCount;
+	}
+
 	public static Tile[][] solvePuzzle(int size) {
 		Tile[][] puzzle = new Tile[(int) Math.sqrt(size)][(int) Math.sqrt(size)];
 
@@ -75,7 +156,7 @@ public class Day20_JurassicJigsaw {
 							puzzle[x][y] = tile;
 							break;
 						}
-						tile = rotateClockWise(tile);
+						tile = rotateTileClockWise(tile);
 					}
 				} else if (x == 0 && y == length - 1) {
 					System.out.print("\nBottom right corner");
@@ -87,7 +168,7 @@ public class Day20_JurassicJigsaw {
 							if (tile.sideN.inEdge && tile.sideW.inEdge) {
 								break;
 							}
-							tile = rotateClockWise(tile);
+							tile = rotateTileClockWise(tile);
 						}
 
 						if (tile.sideW.val.equals(new StringBuilder(puzzle[x][y - 1].sideE.val).reverse().toString())) {
@@ -98,9 +179,9 @@ public class Day20_JurassicJigsaw {
 						}
 
 						tile = flipTileHor(tile);
-						tile = rotateClockWise(tile);
-						tile = rotateClockWise(tile);
-						tile = rotateClockWise(tile);
+						tile = rotateTileClockWise(tile);
+						tile = rotateTileClockWise(tile);
+						tile = rotateTileClockWise(tile);
 						if (tile.sideW.val.equals(new StringBuilder(puzzle[x][y - 1].sideE.val).reverse().toString())) {
 							tile.locked = true;
 							System.out.print(" [locked]");
@@ -118,7 +199,7 @@ public class Day20_JurassicJigsaw {
 							if (tile.sideE.inEdge && tile.sideS.inEdge) {
 								break;
 							}
-							tile = rotateClockWise(tile);
+							tile = rotateTileClockWise(tile);
 						}
 
 						if (tile.sideS.val.equals(new StringBuilder(puzzle[x - 1][y].sideN.val).reverse().toString())) {
@@ -129,9 +210,9 @@ public class Day20_JurassicJigsaw {
 						}
 
 						tile = flipTileHor(tile);
-						tile = rotateClockWise(tile);
-						tile = rotateClockWise(tile);
-						tile = rotateClockWise(tile);
+						tile = rotateTileClockWise(tile);
+						tile = rotateTileClockWise(tile);
+						tile = rotateTileClockWise(tile);
 						if (tile.sideS.val.equals(new StringBuilder(puzzle[x - 1][y].sideN.val).reverse().toString())) {
 							tile.locked = true;
 							System.out.print(" [locked]");
@@ -150,7 +231,7 @@ public class Day20_JurassicJigsaw {
 							if (tile.sideS.inEdge && tile.sideW.inEdge) {
 								break;
 							}
-							tile = rotateClockWise(tile);
+							tile = rotateTileClockWise(tile);
 						}
 
 						if (tile.sideS.val.equals(new StringBuilder(puzzle[x - 1][y].sideN.val).reverse().toString())) {
@@ -161,7 +242,7 @@ public class Day20_JurassicJigsaw {
 						}
 
 						tile = flipTileHor(tile);
-						tile = rotateClockWise(tile);
+						tile = rotateTileClockWise(tile);
 						if (tile.sideS.val.equals(new StringBuilder(puzzle[x - 1][y].sideN.val).reverse().toString())) {
 							tile.locked = true;
 							System.out.print(" [locked]");
@@ -179,7 +260,7 @@ public class Day20_JurassicJigsaw {
 							if (!tile.sideS.inEdge) {
 								break;
 							}
-							tile = rotateClockWise(tile);
+							tile = rotateTileClockWise(tile);
 						}
 						if (tile.sideW.val.equals(new StringBuilder(puzzle[x][y - 1].sideE.val).reverse().toString())) {
 							tile.locked = true;
@@ -208,7 +289,7 @@ public class Day20_JurassicJigsaw {
 							if (!tile.sideW.inEdge) {
 								break;
 							}
-							tile = rotateClockWise(tile);
+							tile = rotateTileClockWise(tile);
 						}
 						if (tile.sideS.val.equals(new StringBuilder(puzzle[x - 1][y].sideN.val).reverse().toString())) {
 							tile.locked = true;
@@ -217,8 +298,8 @@ public class Day20_JurassicJigsaw {
 							break;
 						}
 						tile = flipTileHor(tile);
-						tile = rotateClockWise(tile);
-						tile = rotateClockWise(tile);
+						tile = rotateTileClockWise(tile);
+						tile = rotateTileClockWise(tile);
 						if (tile.sideS.val.equals(new StringBuilder(puzzle[x - 1][y].sideN.val).reverse().toString())) {
 							tile.locked = true;
 							System.out.print(" [locked]");
@@ -236,7 +317,7 @@ public class Day20_JurassicJigsaw {
 							if (!tile.sideN.inEdge) {
 								break;
 							}
-							tile = rotateClockWise(tile);
+							tile = rotateTileClockWise(tile);
 						}
 						if (tile.sideS.val.equals(new StringBuilder(puzzle[x - 1][y].sideN.val).reverse().toString())) {
 							tile.locked = true;
@@ -262,7 +343,7 @@ public class Day20_JurassicJigsaw {
 							if (!tile.sideE.inEdge) {
 								break;
 							}
-							tile = rotateClockWise(tile);
+							tile = rotateTileClockWise(tile);
 						}
 						if (tile.sideS.val.equals(new StringBuilder(puzzle[x - 1][y].sideN.val).reverse().toString())) {
 							tile.locked = true;
@@ -271,8 +352,8 @@ public class Day20_JurassicJigsaw {
 							break;
 						}
 						tile = flipTileHor(tile);
-						tile = rotateClockWise(tile);
-						tile = rotateClockWise(tile);
+						tile = rotateTileClockWise(tile);
+						tile = rotateTileClockWise(tile);
 						if (tile.sideS.val.equals(new StringBuilder(puzzle[x - 1][y].sideN.val).reverse().toString())) {
 							tile.locked = true;
 							System.out.print(" [locked]");
@@ -281,7 +362,6 @@ public class Day20_JurassicJigsaw {
 						}
 					}
 				} else {
-					// Middle
 					System.out.print("\nMiddle");
 					loop: for (Tile tile : midTiles) {
 						if (tile.locked) {
@@ -298,7 +378,7 @@ public class Day20_JurassicJigsaw {
 									puzzle[x][y] = tile;
 									break loop;
 								}
-								tile = rotateClockWise(tile);
+								tile = rotateTileClockWise(tile);
 							}
 							tile = flipTileHor(tile);
 						}
@@ -393,12 +473,7 @@ public class Day20_JurassicJigsaw {
 	private static Tile flipTileHor(Tile tile) {
 		char[][] retArr = new char[tile.grid.length][tile.grid.length];
 		for (int i = 0; i < tile.grid.length; i++) {
-			char[] row = tile.grid[i];
-			for (int j = 0; j < row.length; j++) {
-				char tmp = row[j];
-				retArr[i][j] = row[row.length - j - 1];
-				retArr[i][row.length - j - 1] = tmp;
-			}
+			retArr[i] = new StringBuilder(new String(tile.grid[i])).reverse().toString().toCharArray();
 		}
 		tile.grid = retArr;
 
@@ -415,7 +490,7 @@ public class Day20_JurassicJigsaw {
 		return tile;
 	}
 
-	private static Tile rotateClockWise(Tile tile) {
+	private static Tile rotateTileClockWise(Tile tile) {
 		int size = tile.grid.length;
 		char[][] newGrid = new char[size][size];
 
